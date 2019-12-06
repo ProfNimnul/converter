@@ -1,8 +1,14 @@
 import dbf, datetime
 import easygui
+from abc import  ABC, abstractmethod
 
 
-class EtalonDBF(object):
+class Statement(ABC):
+
+    @abstractmethod
+    def parse(self):
+        pass
+
 
     def getDbfName(self)->str:
         fname = fileopenbox("Выберите файл", default="*.dbf")
@@ -17,6 +23,7 @@ class EtalonDBF(object):
         return fname
 
     def  createEtalonDbf(self):
+        outfilename = {"PivdennyStatement":"111.dbf", "MarfinStatement":"222.dbf"}[self.__class__.__name__ == "PivdennyStatement"]
 
         fielddescription =  "ls C(10); nomerplat C(20); sum N(9,2); data_opl D; comment C(255)"
         table =  dbf.Table("d:\\vypiski.dbf", fielddescription, codepage='cp866')
@@ -30,6 +37,20 @@ class EtalonDBF(object):
     def closeEtalonDfb(self, table:dbf.Table):
         table.close()
         return None
+
+
+
+class PivdennyStatement(Statement):
+
+    def parse(self):
+        pass
+
+class MarfinStatement(Statement):
+
+    def parse(self):
+        pass
+
+
 
 if __name__ == '__main__':
 
